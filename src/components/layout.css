@@ -1,0 +1,32 @@
+body {
+  background-color: #000;
+  color: #fff;
+}
+a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 12px;
+}
+a:hover {
+  font-size: 18px;
+  color: #fff;
+}
+.dropdown {
+  margin: auto;
+  width: 350px;
+  margin-top: 100px;
+}
+.dropdown_right {
+  width: 248px;
+}
+.logo_table {
+  text-align: center;
+  width: 80vw;
+  margin: auto;
+}
+
+@media (max-width: 400px) {
+  .dropdown {
+    margin-left: 3px;
+  }
+}
