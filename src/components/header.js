@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "gatsby";
 
 const header = () => (
-  <nav className="mt-4 mb-5">
+  <nav className="pt-4 pb-5">
     <ul
       style={{
         listStyle: "none",

@@ -77,15 +77,9 @@ const App = () => {
 
         {!isError && (
           <div className="input-group mb-3 dropdown">
-            <div className="input-group-prepend">
-              <label className="input-group-text" htmlFor="inputGroupSelect01">
-                Options
-              </label>
-            </div>
             <select
               onChange={handleChange}
               className="custom-select dropdown_right "
-              id="inputGroupSelect01"
               defaultValue="random"
             >
               <option value="random" disabled hidden>
@@ -104,6 +98,7 @@ const App = () => {
           <marquee
             style={{
               background: "#1b1c1d",
+              color: "greenyellow",
               width: "60%",
               border: "17px solid rgb(27, 28, 29)",
             }}
@@ -119,7 +114,7 @@ const App = () => {
             <img
               src={logo}
               alt="StarWars_Logo"
-              style={{ width: 100, height: 100 }}
+              style={{ width: 300, height: 300 }}
             />
           ) : filmCharacters.length === 0 ? (
             <Loader type="BallTriangle" color="#FFF" height={100} width={100} />

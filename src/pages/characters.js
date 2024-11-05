@@ -50,15 +50,18 @@ const CharactersPage = () => {
       )}
       {!isError &&
         (characters.length === 0 ? (
-          <Loader
-            style={{ marginTop: "30vh", marginLeft: "30vw" }}
-            type="BallTriangle"
-            color="#FFF"
-            height={100}
-            width={100}
-          />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "60vh",
+            }}
+          >
+            <Loader type="BallTriangle" color="#FFF" />
+          </div>
         ) : (
-          <ul style={{ color: "yellow", fontFamily: "monospace" }}>
+          <ul style={{ color: "greenyellow", fontFamily: "monospace" }}>
             {characters.map(({ name }) => (
               <li key={name}>{name}</li>
             ))}
