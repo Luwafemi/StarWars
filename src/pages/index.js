@@ -5,62 +5,56 @@ import axios from "axios";
 import logo from "../assets/star_wars_logo.png";
 
 const App = () => {
-  let [data, setData] = useState({ results: [] });
-  let [filmCharacters, setFilmCharacters] = useState([]);
-  let [value, setValue] = useState(null);
+  let [filmData, setFilmData] = useState([]);
+  let [characters, setCharacters] = useState([]);
+  let [filmID, setFilmID] = useState(null);
   let [openingCrawl, setOpeningCrawl] = useState(null);
   let [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    //API request for films data
-    async function fetchMovieData() {
-      setIsError(false);
+    //get and store data (titles, characters, crawls, etc) for all films, from external API
+    (async () => {
       try {
         let result = await axios(`${process.env.GATSBY_FILMS_ENDPOINT}`);
-        setData(result.data);
+        setFilmData(result.data.results);
       } catch (error) {
         setIsError(true);
       }
-    }
-    fetchMovieData();
-  }, [filmCharacters]);
+    })();
+  }, []);
 
-  let filmOptions = data.results.map((item) => ({
-    key: item.episode_id,
-    text: item.title,
-    value: item.episode_id,
-    date: item.release_date,
+  //structure out the data we need from what was provided by the API
+  let newFilmData = filmData.map((item) => ({
+    id: item.episode_id,
+    title: item.title,
     opening_crawl: item.opening_crawl,
     characters: item.characters,
   }));
 
-  function buildCharacterList(data) {
-    let list = [];
-    Promise.all(
-      data.map(async (url) => {
+  async function buildCharacterList(charactersUrl) {
+    let charactersList = await Promise.all(
+      charactersUrl.map(async (url) => {
         try {
           let result = await axios(url);
-          list.push(result.data);
+          return result.data;
         } catch (error) {
           setIsError(true);
-          return;
+          return null;
         }
       })
     );
-    return list;
+    return charactersList;
   }
-  function handleChange(e) {
-    let value = Number(e.target.value);
-    let currentFilm = filmOptions.find((film) => film.value === value);
+  async function handleChange(e) {
+    let chosenFilmID = Number(e.target.value);
+    let currentFilm = newFilmData.find((film) => film.id === chosenFilmID);
     let currentFilmCharactersUrl = currentFilm.characters;
 
-    let charactersList = buildCharacterList(currentFilmCharactersUrl);
+    let charactersList = await buildCharacterList(currentFilmCharactersUrl);
 
-    return [
-      setValue(value),
-      setFilmCharacters(charactersList),
-      setOpeningCrawl(currentFilm.opening_crawl),
-    ];
+    setCharacters(charactersList);
+    setFilmID(chosenFilmID);
+    setOpeningCrawl(currentFilm.opening_crawl);
   }
 
   return (
@@ -80,14 +74,14 @@ const App = () => {
             <select
               onChange={handleChange}
               className="custom-select dropdown_right "
-              defaultValue="random"
+              defaultValue="selectMovie"
             >
-              <option value="random" disabled hidden>
+              <option value="selectMovie" hidden>
                 Select Movie
               </option>
-              {filmOptions.map(({ key, value, text }) => (
-                <option key={key} value={value}>
-                  {text}
+              {newFilmData.map(({ id, title }) => (
+                <option key={id} value={id}>
+                  {title}
                 </option>
               ))}
             </select>
@@ -110,13 +104,13 @@ const App = () => {
 
       <div className="logo_table ">
         {!isError &&
-          (value === null ? (
+          (filmID === null ? (
             <img
               src={logo}
               alt="StarWars_Logo"
               style={{ width: 300, height: 300 }}
             />
-          ) : filmCharacters.length === 0 ? (
+          ) : characters.length === 0 ? (
             <Loader type="BallTriangle" color="#FFF" height={100} width={100} />
           ) : (
             <table
@@ -135,7 +129,7 @@ const App = () => {
                 </tr>
               </thead>
               <tbody>
-                {filmCharacters.map(({ name }) => (
+                {characters.map(({ name }) => (
                   <tr key={name}>
                     <td>{name}</td>
                   </tr>
