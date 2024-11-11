@@ -7,10 +7,9 @@ const MoviesPage = () => {
   let [filmTitles, setFilmTitles] = useState([]);
   let [isError, setIsError] = useState(false);
 
+  //get and store all films data, from external API
   useEffect(() => {
-    // API request for films data
-
-    let getFilms = async () => {
+    (async () => {
       try {
         let response = await axios.get(`${process.env.GATSBY_FILMS_ENDPOINT}`);
         let filmData = response.data.results;
@@ -18,8 +17,7 @@ const MoviesPage = () => {
       } catch (error) {
         setIsError(true);
       }
-    };
-    getFilms();
+    })();
   }, []);
   return (
     <Layout>

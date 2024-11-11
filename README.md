@@ -2,9 +2,14 @@
     <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
   </a>
 </p>
-<h1 align="center">
+<h6 align="center">
   This app was developed using Gatsby
-</h1>
+</h6>
+
+<pre> 
+A Gatsby app that fetches StarWars data (movie titles, characters, crawls)
+from external API and displays them dynamically.
+</pre>
 
 ## 🚀🚀 Quick start
 

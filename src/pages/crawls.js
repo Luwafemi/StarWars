@@ -7,10 +7,9 @@ const CrawlsPage = () => {
   let [filmCrawls, setFilmCrawls] = useState([]);
   let [isError, setIsError] = useState(false);
 
+  //get and store all films data, from external API
   useEffect(() => {
-    //API request for films data
-
-    let getFilms = async () => {
+    (async () => {
       try {
         let response = await axios.get(`${process.env.GATSBY_FILMS_ENDPOINT}`);
         let crawlsData = response.data.results;
@@ -18,9 +17,7 @@ const CrawlsPage = () => {
       } catch (error) {
         setIsError(true);
       }
-    };
-
-    getFilms();
+    })();
   }, []);
   return (
     <Layout>

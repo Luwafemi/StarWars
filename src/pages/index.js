@@ -11,8 +11,8 @@ const App = () => {
   let [openingCrawl, setOpeningCrawl] = useState(null);
   let [isError, setIsError] = useState(false);
 
+  //get and store data (titles, characters, crawls, etc) for all films, from external API
   useEffect(() => {
-    //get and store data (titles, characters, crawls, etc) for all films, from external API
     (async () => {
       try {
         let result = await axios(`${process.env.GATSBY_FILMS_ENDPOINT}`);
@@ -31,12 +31,13 @@ const App = () => {
     characters: item.characters,
   }));
 
+  //build an array of the characters, using the URLS of the characters, provided by the API
   async function buildCharacterList(charactersUrl) {
     let charactersList = await Promise.all(
       charactersUrl.map(async (url) => {
         try {
           let result = await axios(url);
-          return result.data;
+          return result.data.name;
         } catch (error) {
           setIsError(true);
           return null;
@@ -45,16 +46,18 @@ const App = () => {
     );
     return charactersList;
   }
+
+  //onChange handler for 'select' element
   async function handleChange(e) {
     let chosenFilmID = Number(e.target.value);
     let currentFilm = newFilmData.find((film) => film.id === chosenFilmID);
     let currentFilmCharactersUrl = currentFilm.characters;
 
-    let charactersList = await buildCharacterList(currentFilmCharactersUrl);
-
-    setCharacters(charactersList);
     setFilmID(chosenFilmID);
     setOpeningCrawl(currentFilm.opening_crawl);
+
+    let charactersList = await buildCharacterList(currentFilmCharactersUrl);
+    setCharacters(charactersList);
   }
 
   return (
@@ -129,7 +132,7 @@ const App = () => {
                 </tr>
               </thead>
               <tbody>
-                {characters.map(({ name }) => (
+                {characters.map((name) => (
                   <tr key={name}>
                     <td>{name}</td>
                   </tr>

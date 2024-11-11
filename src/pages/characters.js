@@ -7,31 +7,25 @@ const CharactersPage = () => {
   let [characters, setCharacters] = useState([]);
   let [isError, setIsError] = useState(false);
 
+  //Get and aggregate all StarWars characters across all pages
   useEffect(() => {
-    //Get all StarWars characters across all pages
+    let allCharacters = [];
     let getCharacters = async (page = 1) => {
       try {
-        let query = `${process.env.GATSBY_PEOPLE_ENDPOINT}?page=${page}`;
-        let response = await axios.get(query);
-        let charactersData = response.data.results;
+        let response = await axios.get(
+          `${process.env.GATSBY_PEOPLE_ENDPOINT}?page=${page}`
+        );
+        allCharacters = allCharacters.concat(response.data.results);
+
         if (response.data.next) {
-          return charactersData.concat(await getCharacters(page + 1));
+          return getCharacters(page + 1);
         }
-        return charactersData;
+        setCharacters(allCharacters);
       } catch (error) {
         setIsError(true);
       }
     };
-    // Await getCharacters(), as it returns a promise
-    let awaitGetCharacters = async () => {
-      try {
-        let response = await getCharacters();
-        setCharacters(response);
-      } catch (error) {
-        setIsError(true);
-      }
-    };
-    awaitGetCharacters();
+    getCharacters();
   }, []);
 
   return (
