@@ -43,7 +43,7 @@ const CrawlsPage = () => {
               height: "60vh",
             }}
           >
-            <Loader type="BallTriangle" color="#FFF" />
+            <Loader type="Bars" color="greenyellow" />
           </div>
         ) : (
           <ul style={{ color: "greenyellow", fontFamily: "monospace" }}>

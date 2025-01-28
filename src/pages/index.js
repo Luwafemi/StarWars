@@ -114,7 +114,7 @@ const App = () => {
               style={{ width: 300, height: 300 }}
             />
           ) : characters.length === 0 ? (
-            <Loader type="BallTriangle" color="#FFF" height={100} width={100} />
+            <Loader type="Bars" color="greenyellow" height={60} width={60} />
           ) : (
             <table
               className="table bg-warning"
