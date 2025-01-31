@@ -30,6 +30,15 @@ const App = () => {
     opening_crawl: item.opening_crawl,
     characters: item.characters,
   }));
+  //array of filmData for the select element - avoid API delay
+  let staticFilmData = [
+    { id: 1, title: "The Phantom Menace" },
+    { id: 2, title: "Attack of the Clones" },
+    { id: 3, title: "Revenge of the Sith" },
+    { id: 4, title: "A New Hope" },
+    { id: 5, title: "The Empire Strikes Back" },
+    { id: 6, title: "Return of the Jedi" },
+  ];
 
   //build an array of the characters, using the URLS of the characters, provided by the API
   async function buildCharacterList(charactersUrl) {
@@ -82,7 +91,7 @@ const App = () => {
               <option value="selectMovie" hidden>
                 Select Movie
               </option>
-              {newFilmData.map(({ id, title }) => (
+              {staticFilmData.map(({ id, title }) => (
                 <option key={id} value={id}>
                   {title}
                 </option>
